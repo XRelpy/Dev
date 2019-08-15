@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include"task.h"
+#include"virtual_mem.h"
 
 void taskBStart() {
     printf("B: taskStart\n");
@@ -16,7 +17,7 @@ void taskBExit() {
 }
 
 TASK_INIT(1)() {
-    struct task *taskB = (struct task *) malloc(sizeof(struct task));
+    struct task *taskB = (struct task *) vm_malloc((sizeof(struct task)));
     taskB->start = &taskBStart;
     taskB->loop = &taskBLoop;
     taskB->exit = &taskBExit;

@@ -3,17 +3,18 @@
 
 /*
     total memory: 64M
-    system use memory: HIGHT:16M 
-    app use memory: LOW：48M
+    system use memory: HIGHT:4M 
+    app use memory: LOW：60M
     TLB:   6bit -- 11 bit -- 9bit
  */
 
 #define MEMORY_START 0x0
 #define MEMORY_END 0x3ffffff
-#define MEMORY_SYS_BASE  0x2000000
+#define MEMORY_SYS_BASE  0x3C00000
 
 #define MEM_OFFSET (1 << 9)
-
+#define MEM_DIR_VALUE (1<<6)
+#define MEM_MID_DIR_VALUE (1<<6)
 /*
     memory index:
         u32 flag:  
@@ -31,9 +32,9 @@ struct virtual_mem_index
     unsigned int RES_2:11,TASK_MEM_INDEX:10,MID_DIR:11;
 } VIRTUAL_MEME_INDEX;
 
-extern int vm_malloc(int size);
-extern int vm_write(int pos);
-extern int vm_read(int pos);
+extern  unsigned long vm_malloc(unsigned int size);
+extern int *vm_write(unsigned int pos);
+extern int *vm_read(unsigned int pos);
 extern void mem_init();
 extern void dumpsys();
 #endif

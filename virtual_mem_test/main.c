@@ -33,6 +33,7 @@ int main(int argv, char *argc[]) {
     mem_init();
     taskInit();
     printf("system running.\n");
+    dumpsys();
     // System Start.
     signal(SIGALRM, timer);
     alarm(1);
