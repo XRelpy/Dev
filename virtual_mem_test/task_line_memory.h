@@ -12,7 +12,6 @@ struct task_line {
     U32 RES:3,OFFSET:26,TYPE:2,USED:1
 };
 
-extern U8 *mem_task;
 extern U32 task_malloc(U32 size);
 extern U32 task_write(U32 pos, U32 offset, U8 data);
 extern U8 task_read(U64 pos);

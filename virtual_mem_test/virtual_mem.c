@@ -26,9 +26,10 @@ U64 vm_malloc(U32 size) {
                     find_mem = true;
                     //printf("index0:%lld\n", ptr);
                     //printf("index:%lld\n", (mem_index + (p->DIR) * (p->MID_DIR) * MEM_OFFSET));
+                    printf("alloc:%d %d\n", p->DIR, p->MID_DIR);
                 }
                 p->USED = 1;
-                struct task *t = getCurrentTask();
+                struct task *t = currentTask;
                 p->ID = (t == NULL) ? 1 : t->taskId;
                 page_count--;
             } 
@@ -36,6 +37,7 @@ U64 vm_malloc(U32 size) {
                 break;
             }
     }
+    printf("vm_malloc: %lld\n", ptr);
     return ptr;
 }
 U32 *vm_write(U32 pos) {

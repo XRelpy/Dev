@@ -4,27 +4,29 @@
 #include "task.h"
 
 U32 getTaskId() {
-    struct task *t = getCurrentTask();
+    struct task *t = currentTask;
     U32 taskId = t->taskId - BASE_TASK_ID_START;
     return taskId;
 }
 
 U32 task_malloc(U32 size) {
-    U32 index =0;
-    
+    U32 index =0;  
     U32 memBlockSize = size / MEM_OFFSET + 1;
     bool offSetIsWrited = false;
     U32 taskId = getTaskId();
     U64 *taskPrt = mem_task + taskId * (TASK_LINE_MEM_NUM) * sizeof(U64);
+    printf("Base ADDR:%ld\n", *taskPrt);
     U32 ptrSize = sizeof(U64);
-    int tPtr = sizeof(struct task_line);
-    for (int i = 0; i < TASK_LINE_MEM_NUM; i++) {
-        if ((*(taskPrt + ptrSize * i)) == 0) {
-            (*taskPrt) = vm_malloc(size);
+    //int tPtr = sizeof(struct task_line);
+    for (U32 i = 0; i < TASK_LINE_MEM_NUM; i++) {
+        //*(taskPrt + i) = 'A';
+        if ((*(taskPrt + i)) == 0) {
+            (*(taskPrt + i)) = vm_malloc(size);
+             printf("Base ADDR 1:%ld\n", *(taskPrt + i)); 
             /*
-            U8 *data = *taskPrt;
-            (*data) = 0x8; */
-            printf("ADDR:%ld\n", (*taskPrt));
+            U8 *data = *(taskPrt + ptrSize * i);
+            (*data) = 'D';*/
+            printf("ADDR:%ld\n", *(taskPrt + i));
             printf("taskId:%d\n", taskId);
             index = i;
             break;
@@ -37,8 +39,11 @@ U32 task_malloc(U32 size) {
 U32 task_write(U32 pos, U32 offset, U8 data) {
     U32 ptrSize = sizeof(U64); 
     U32 taskId = getTaskId();
-    U64 *taskPrt = (mem_task + (taskId * (TASK_LINE_MEM_NUM)) * sizeof(U64) );
-    U8 *t = *taskPrt;
+    U64 *taskPrt = (mem_task + (taskId * (TASK_LINE_MEM_NUM)) * sizeof(U64));
+    //printf("Write Base ADDR:%ld\n", *taskPrt);
+    //printf("Write Base ADDR2 :%ld %d\n", *(taskPrt + pos), pos);
+    U8 *t = *(taskPrt + pos);
+    if (*(taskPrt + pos) == 0) return -1;
     *(t + offset) = data;
     return 0;
 }
