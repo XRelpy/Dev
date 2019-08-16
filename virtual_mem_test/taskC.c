@@ -5,15 +5,15 @@
 #include"virtual_mem.h"
 
 void taskCStart() {
-    printf("C:taskStart\n");
+    printf("C: taskStart\n");
 }
 
 void taskCLoop() {
-    printf("C:taskLoop\n");
+    printf("C: taskLoop\n");
 }
 
 void taskCExit() {
-    printf("C:taskExit\n");
+    printf("C: taskExit\n");
 }
 
 TASK_INIT(2)() {

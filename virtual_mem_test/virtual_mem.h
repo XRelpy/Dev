@@ -3,14 +3,14 @@
 
 /*
     total memory: 64M
-    system use memory: HIGHT:4M 
-    app use memory: LOW：60M
+    system use memory: HIGHT:2M
+    app use memory: LOW：62M
     TLB:   6bit -- 11 bit -- 9bit
  */
 
 #define MEMORY_START 0x0
 #define MEMORY_END 0x3ffffff
-#define MEMORY_SYS_BASE  0x3C00000
+#define MEMORY_SYS_BASE  0x3e00000
 
 #define MEM_OFFSET (1 << 9)
 #define MEM_DIR_VALUE (1<<6)

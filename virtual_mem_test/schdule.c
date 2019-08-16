@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "task.h"
+#include"virtual_mem.h"
 #include "sys.h"
 
 static struct task_list *index;
@@ -15,14 +16,14 @@ void register_task(struct task *t) {
     struct task_list *temp;
 
     if (index == NULL) {
-        index = (struct task_list *)malloc(sizeof(struct task_list));
+        index = (struct task_list *)vm_malloc(sizeof(struct task_list));
         temp = index;
     } else {
         temp = index;
         while (temp->next != NULL) {
             temp = (struct task_list *)temp->next;
         }
-        temp->next = (struct task_list *)malloc(sizeof(struct task_list));
+        temp->next = (struct task_list *)vm_malloc(sizeof(struct task_list));
         temp = (struct task_list *)temp->next;
     }
     temp->t = t;

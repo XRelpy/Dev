@@ -1,8 +1,9 @@
 #ifndef _BASE_H
 #define _BASE_H
-#define U8  (unsigned char)
-#define U16 (unsigned short int)
-#define U32 (unsigned int)
+#define U8  unsigned char
+#define U16 unsigned short int
+#define U32 unsigned int
+#define U64 unsigned long
 
 #define DEBUG  1
 
