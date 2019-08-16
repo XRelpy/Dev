@@ -6,6 +6,7 @@
 
 static struct task_list *index;
 struct task_list *runningTask;
+U32 taskCnt = 1;
 
 void register_task(struct task *t) {
     /*/ debug
@@ -28,7 +29,11 @@ void register_task(struct task *t) {
         temp = (struct task_list *)temp->next;
         temp->next = NULL;
     }
+    // init system context
+    t->taskId = BASE_TASK_ID_START + taskCnt;
+    t->taskStatus = TASK_STATUS_START;
     temp->t = t;
+    taskCnt++;
 
     int cnt = 0;
     temp = index;
@@ -37,9 +42,6 @@ void register_task(struct task *t) {
         temp = (struct task_list *)temp->next;
     }
 
-    // init system context
-    t->taskId = BASE_TASK_ID_START + cnt;
-    t->taskStatus = TASK_STATUS_START;
     //printf("Total task:%d\n", cnt); 
 }
 

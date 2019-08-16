@@ -16,7 +16,7 @@ const U32 pg_szie = MEMORY_SYS_BASE / MEM_OFFSET;
 U64 vm_malloc(U32 size) {
     U64 ptr;
     U32 page_count = size / MEM_OFFSET + 1;
-    printf("size:%d\n", page_count);
+    //printf("size:%d\n", page_count);
     bool find_mem = false;
         for (int i = 0; i < pg_szie; i = i + pt_size)  {
             struct virtual_mem_index *p = (struct virtual_mem_index *)(mem_sys + i);
@@ -24,7 +24,7 @@ U64 vm_malloc(U32 size) {
                 if (!find_mem) {
                     ptr = mem_index + (p->DIR) * (p->MID_DIR) * MEM_OFFSET +(p->MID_DIR) * MEM_OFFSET ;
                     find_mem = true;
-                    printf("index0:%lld\n", ptr);
+                    //printf("index0:%lld\n", ptr);
                     //printf("index:%lld\n", (mem_index + (p->DIR) * (p->MID_DIR) * MEM_OFFSET));
                 }
                 p->USED = 1;
@@ -52,7 +52,7 @@ void mem_init() {
     mem_index = (void  *) malloc((MEMORY_END + 1));
     memset(mem_index, 0x0, (MEMORY_END + 1));
     // init gpt
-    printf("virtual_mem_index:%ld\n" ,mem_index);
+    //printf("virtual_mem_index:%ld\n" ,mem_index);
     mem_sys = mem_index + MEMORY_SYS_BASE;
 
 
@@ -65,7 +65,7 @@ void mem_init() {
         p->TASK_MEM_INDEX = 0x0;
         p->DIR = i / MEM_DIR_VALUE;
         p->MID_DIR = i % MEM_MID_DIR_VALUE;
-        printf("pg： %d %d\n",p->DIR, p->MID_DIR);
+        //printf("pg： %d %d\n",p->DIR, p->MID_DIR);
     }
     mem_task = mem_sys + pg_szie * pt_size;
     //dumpsys();
@@ -81,6 +81,9 @@ U32 taskLineTableWrite(U32 taskId, U32 size) {
     for (int i = 0; i < TASK_LINE_MEM_NUM; i++) {
         if ((*(taskPrt + ptrSize * i)) == 0) {
             (*taskPrt) = vm_malloc(size);
+            /*
+            U8 *data = *taskPrt;
+            (*data) = 0x8; */
             printf("ADDR:%ld\n", (*taskPrt));
             printf("taskId:%d\n", taskId);
             index = i;
@@ -121,13 +124,14 @@ U32 taskLineTableWrite(U32 taskId, U32 size) {
 }
 
 U32 taskLineTableDataWrite(U32 taskId, U32 pos, U32 offset, U8 data) {
+    /*
     U32 ptrSize = sizeof(U64); 
-    taskId = 1;
-    //printf("write id:%d\n" + (U32)taskId);
-    U8 *taskPrt = mem_task + (TASK_LINE_MEM_NUM) * sizeof(U64);
+    printf("write id:%d\n" + (U32)taskId);
+    U8 *taskPrt = mem_task + taskId * (TASK_LINE_MEM_NUM) * sizeof(U64);
     
     (*(taskPrt + offset)) = data;
     printf("WRITE DATA:%c addr:%ld\n", (*(taskPrt + offset)), (taskPrt + offset));
+    */
     return 0;
 }
 
