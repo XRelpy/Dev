@@ -3,6 +3,7 @@
 #include <signal.h>
 #include <sys/time.h>
 #include<stdbool.h>
+#include <string.h>
 
 #include "virtual_mem.h"
 
@@ -11,6 +12,9 @@
 
 bool schduleFlag = false;
 struct task *currentTask;
+
+int runningCycle = 20;
+
 void timer(int sig)
 {
     if(SIGALRM == sig)
@@ -24,9 +28,13 @@ void timer(int sig)
         }
     }
     if (DEBUG == 1) {
-        dumpsys();
-        printf("DUMPSYS..\n");
-        sleep(1);
+        runningCycle--;
+        if (runningCycle == 0) {
+            dumpsys();
+            printf("DUMPSYS..\n");
+            sleep(1);
+            exit(1);
+        }
     }
     return ;
 }

@@ -5,15 +5,18 @@
 #include"virtual_mem.h"
 
 void taskCStart() {
-    /*
-    U32 taskMem = task_malloc(256);
-    for (int i = 0; i < 256; i++) {
-        task_write(taskMem, i, 'C' + i);
-    }*/
+    U32 taskMem = task_malloc(1024);
+    for (int i = 0; i < 1024; i++) {
+        task_write(taskMem, i, 'C');
+    }
     printf("C: taskStart\n");
 }
 
 void taskCLoop() {
+    U32 taskMem = task_malloc(1024);
+    for (int i = 0; i < 1024; i++) {
+        task_write(taskMem, i, 'C' + i);
+    }
     printf("C: taskLoop\n");
 }
 

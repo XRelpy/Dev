@@ -22,11 +22,11 @@ U64 vm_malloc(U32 size) {
             struct virtual_mem_index *p = (struct virtual_mem_index *)(mem_sys + i);
             if (p->USED == 0) {
                 if (!find_mem) {
-                    ptr = mem_index + (p->DIR) * (p->MID_DIR) * MEM_OFFSET +(p->MID_DIR) * MEM_OFFSET ;
+                    ptr = mem_index + (p->DIR) * MEM_MID_DIR_VALUE * MEM_OFFSET + p->MID_DIR * MEM_OFFSET;
                     find_mem = true;
                     //printf("index0:%lld\n", ptr);
                     //printf("index:%lld\n", (mem_index + (p->DIR) * (p->MID_DIR) * MEM_OFFSET));
-                    printf("alloc:%d %d\n", p->DIR, p->MID_DIR);
+                    //printf("alloc:%d %d\n", p->DIR, p->MID_DIR);
                 }
                 p->USED = 1;
                 struct task *t = currentTask;
@@ -37,7 +37,7 @@ U64 vm_malloc(U32 size) {
                 break;
             }
     }
-    printf("vm_malloc: %lld\n", ptr);
+    //printf("vm_malloc: %lld\n", ptr);
     return ptr;
 }
 U32 *vm_write(U32 pos) {
@@ -86,8 +86,8 @@ U32 taskLineTableWrite(U32 taskId, U32 size) {
             /*
             U8 *data = *taskPrt;
             (*data) = 0x8; */
-            printf("ADDR:%ld\n", (*taskPrt));
-            printf("taskId:%d\n", taskId);
+            //printf("ADDR:%ld\n", (*taskPrt));
+            //printf("taskId:%d\n", taskId);
             index = i;
             break;
         }

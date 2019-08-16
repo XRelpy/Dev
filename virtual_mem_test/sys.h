@@ -1,5 +1,6 @@
 #ifndef _SYS_H
 #define _SYS_H
+
 #define U8  unsigned char
 #define U16 unsigned short int
 #define U32 unsigned int
