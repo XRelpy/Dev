@@ -20,12 +20,12 @@ void timer(int sig)
         currentTask = getCurrentTask();
         schduleFlag = false;
         if (SYS_TIMER == SYS_TIMER_1) {
-            alarm(3);
+            alarm(1);
         }
     }
     if (DEBUG == 1) {
         dumpsys();
-        printf("DUMPSYS..");
+        printf("DUMPSYS..\n");
         sleep(1);
     }
     return ;

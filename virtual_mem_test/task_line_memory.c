@@ -4,7 +4,7 @@
 #include "task.h"
 
 U32 getTaskId() {
-    struct task *t = getRuningTask();
+    struct task *t = getCurrentTask();
     U32 taskId = t->taskId - BASE_TASK_ID_START;
     return taskId;
 }
@@ -30,13 +30,14 @@ U32 task_malloc(U32 size) {
             break;
         }
     }
+    printf("Index:%d\n", index);
     return index;
 }
 
 U32 task_write(U32 pos, U32 offset, U8 data) {
     U32 ptrSize = sizeof(U64); 
     U32 taskId = getTaskId();
-    U64 *taskPrt = (mem_task + taskId * (TASK_LINE_MEM_NUM) * sizeof(U64));
+    U64 *taskPrt = (mem_task + (taskId * (TASK_LINE_MEM_NUM)) * sizeof(U64) );
     U8 *t = *taskPrt;
     *(t + offset) = data;
     return 0;
