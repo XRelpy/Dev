@@ -27,6 +27,9 @@ struct task_list
 
 extern void register_task(struct task *t);
 extern void schdule_task();
+// for scdule 
 extern struct task *getCurrentTask();
+// for memory
+extern struct task *getRuningTask();
 extern void task_exit();
 #endif

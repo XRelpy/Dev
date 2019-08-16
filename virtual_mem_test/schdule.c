@@ -17,6 +17,7 @@ void register_task(struct task *t) {
 
     if (index == NULL) {
         index = (struct task_list *)vm_malloc(sizeof(struct task_list));
+        index->next = NULL;
         temp = index;
     } else {
         temp = index;
@@ -25,6 +26,7 @@ void register_task(struct task *t) {
         }
         temp->next = (struct task_list *)vm_malloc(sizeof(struct task_list));
         temp = (struct task_list *)temp->next;
+        temp->next = NULL;
     }
     temp->t = t;
 
@@ -51,6 +53,10 @@ void schdule_task() {
     if (runningTask == NULL) {
         runningTask == index;
     }
+}
+
+struct task *getRuningTask() {
+    return (runningTask->t);
 }
 
 struct task *getCurrentTask() {

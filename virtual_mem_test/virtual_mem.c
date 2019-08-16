@@ -3,31 +3,34 @@
 #include <string.h>
 #include<stdbool.h>
 #include "virtual_mem.h"
+#include "task_line_memory.h"
 #include "task.h"
+#include "sys.h"
 
-unsigned char *mem_index;
-unsigned char *mem_sys;
-unsigned char *mem_task;
-const int pt_size = sizeof(struct virtual_mem_index);
-const int pg_szie = MEMORY_SYS_BASE / MEM_OFFSET;
+U8 *mem_index;
+U8 *mem_sys;
+U8 *mem_task;
+const U32 pt_size = sizeof(struct virtual_mem_index);
+const U32 pg_szie = MEMORY_SYS_BASE / MEM_OFFSET;
 
- unsigned long  vm_malloc(unsigned int size) {
-    unsigned long ptr;
-    int page_count = size / MEM_OFFSET + 1;
+U64 vm_malloc(U32 size) {
+    U64 ptr;
+    U32 page_count = size / MEM_OFFSET + 1;
     printf("size:%d\n", page_count);
     bool find_mem = false;
         for (int i = 0; i < pg_szie; i = i + pt_size)  {
             struct virtual_mem_index *p = (struct virtual_mem_index *)(mem_sys + i);
             if (p->USED == 0) {
-                    if (!find_mem) {
-                        ptr = mem_index + (p->DIR) * (p->MID_DIR) * MEM_OFFSET +(p->MID_DIR) * MEM_OFFSET ;
-                        find_mem = true;
-                        printf("index0:%lld\n", ptr);
-                        //printf("index:%lld\n", (mem_index + (p->DIR) * (p->MID_DIR) * MEM_OFFSET));
-                    }
-                    p->USED = 1;
-                    p->ID = 1;
-                    page_count--;
+                if (!find_mem) {
+                    ptr = mem_index + (p->DIR) * (p->MID_DIR) * MEM_OFFSET +(p->MID_DIR) * MEM_OFFSET ;
+                    find_mem = true;
+                    printf("index0:%lld\n", ptr);
+                    //printf("index:%lld\n", (mem_index + (p->DIR) * (p->MID_DIR) * MEM_OFFSET));
+                }
+                p->USED = 1;
+                struct task *t = getCurrentTask();
+                p->ID = (t == NULL) ? 1 : t->taskId;
+                page_count--;
             } 
             if (page_count == 0) {
                 break;
@@ -35,10 +38,10 @@ const int pg_szie = MEMORY_SYS_BASE / MEM_OFFSET;
     }
     return ptr;
 }
-int *vm_write(unsigned int pos) {
+U32 *vm_write(U32 pos) {
     return NULL;
 }
-int * vm_read(unsigned int pos) {
+U32 * vm_read(U32 pos) {
     return NULL;
 }
 
@@ -53,7 +56,7 @@ void mem_init() {
     mem_sys = mem_index + MEMORY_SYS_BASE;
 
 
-    for (int i = 0; i < pg_szie; i = i + pt_size) {
+    for (U32 i = 0; i < pg_szie; i = i + pt_size) {
         struct virtual_mem_index *p = (struct virtual_mem_index *)(mem_sys + i);
         p->RES_1 = 0x0;
         p->USED = 0x0;
@@ -66,6 +69,66 @@ void mem_init() {
     }
     mem_task = mem_sys + pg_szie * pt_size;
     //dumpsys();
+}
+
+U32 taskLineTableWrite(U32 taskId, U32 size) {
+    U32 index =0;
+    U32 memBlockSize = size / MEM_OFFSET + 1;
+    bool offSetIsWrited = false;
+    U64 *taskPrt = mem_task + taskId * (TASK_LINE_MEM_NUM) * sizeof(U64);
+    U32 ptrSize = sizeof(U64);
+    int tPtr = sizeof(struct task_line);
+    for (int i = 0; i < TASK_LINE_MEM_NUM; i++) {
+        if ((*(taskPrt + ptrSize * i)) == 0) {
+            (*taskPrt) = vm_malloc(size);
+            printf("ADDR:%ld\n", (*taskPrt));
+            printf("taskId:%d\n", taskId);
+            index = i;
+            break;
+        }
+    }
+        
+    /*
+    for (int i = 0; i < TASK_LINE_MEM_NUM; i++) {
+        if ((*(taskPrt + ptrSize * i)) == 0) {
+            (*taskPrt) = vm_malloc(MEM_OFFSET);
+            (*(taskPrt + sizeof(U32))) = TASK_TABLE_USED;
+            
+            for (int i = 0; i < MEM_OFFSET;i += tPtr) {
+                struct task_line * data = taskPrt + i;
+                if (data->USED == 0) {
+                    if (!offSetIsWrited) {
+                        data->USED = 1;
+                        data->TYPE = TYPE_LINE_OFFSET;
+                        data->OFFSET = size;
+                        offSetIsWrited = true;
+                    } else {
+                        if (memBlockSize == 0) {
+                            break;
+                        } else {
+                            data->USED = 1;
+                            data->TYPE = TYPE_LINE_PTR;
+                            data->OFFSET = size;
+                        }
+                    }
+                }
+            }
+            break;
+        }
+    }
+    */
+    return index;
+}
+
+U32 taskLineTableDataWrite(U32 taskId, U32 pos, U32 offset, U8 data) {
+    U32 ptrSize = sizeof(U64); 
+    taskId = 1;
+    //printf("write id:%d\n" + (U32)taskId);
+    U8 *taskPrt = mem_task + (TASK_LINE_MEM_NUM) * sizeof(U64);
+    
+    (*(taskPrt + offset)) = data;
+    printf("WRITE DATA:%c addr:%ld\n", (*(taskPrt + offset)), (taskPrt + offset));
+    return 0;
 }
 
 void dumpsys() {

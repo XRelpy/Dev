@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include<unistd.h>
 #include <signal.h>
+#include <sys/time.h>
 #include<stdbool.h>
 
 #include "virtual_mem.h"
 
-#include"task.h"
+#include "task.h"
+#include "sys.h"
 
 bool schduleFlag = false;
 struct task *currentTask;
@@ -17,7 +19,14 @@ void timer(int sig)
         schdule_task();
         currentTask = getCurrentTask();
         schduleFlag = false;
-        alarm(1);
+        if (SYS_TIMER == SYS_TIMER_1) {
+            alarm(3);
+        }
+    }
+    if (DEBUG == 1) {
+        dumpsys();
+        printf("DUMPSYS..");
+        sleep(1);
     }
     return ;
 }
@@ -33,10 +42,21 @@ int main(int argv, char *argc[]) {
     mem_init();
     taskInit();
     printf("system running.\n");
-    dumpsys();
+    //dumpsys();
     // System Start.
     signal(SIGALRM, timer);
-    alarm(1);
+    if (SYS_TIMER == SYS_TIMER_2) {
+        struct itimerval tick;
+        memset(&tick, 0, sizeof(tick));
+        tick.it_value.tv_sec = 1;
+        tick.it_value.tv_usec = 0;
+        tick.it_interval.tv_sec = 1;
+        tick.it_interval.tv_usec = 0;
+        setitimer(ITIMER_REAL, &tick, NULL);
+    } else if (SYS_TIMER == SYS_TIMER_1) {
+        alarm(1);
+    }
+
     while(1) {
         if (!schduleFlag) {
             if (currentTask != NULL) {
@@ -51,7 +71,11 @@ int main(int argv, char *argc[]) {
                 }
             }
             schduleFlag = true;          
-        }        
+        }
+        if (SYS_TIMER == SYS_TIMER_0) {
+            timer(SIGALRM);
+            sleep(1);  
+        } 
     }
     return 0;
 }
