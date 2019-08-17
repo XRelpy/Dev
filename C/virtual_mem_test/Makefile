@@ -15,6 +15,8 @@ schdule.o:$(inc)
 
 virtual_mem.o:$(inc)
 
+task_line_memory.o:$(inc)
+
 taskA.o: $(inc)
 
 taskB.o:$(inc)

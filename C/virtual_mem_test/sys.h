@@ -16,5 +16,5 @@
 #define SYS_TIMER_1 1
 #define SYS_TIMER_2 2
 
-#define SYS_TIMER SYS_TIMER_0
+#define SYS_TIMER SYS_TIMER_2
 #endif

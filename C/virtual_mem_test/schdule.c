@@ -46,14 +46,12 @@ void register_task(struct task *t) {
 }
 
 void schdule_task() {
-    if (runningTask == NULL) {
-        runningTask = index;
-    } else {
+    if (runningTask != NULL) {
         runningTask = (struct task_list *)runningTask->next;
     }
 
     if (runningTask == NULL) {
-        runningTask == index;
+        runningTask = index;
     }
 }
 
