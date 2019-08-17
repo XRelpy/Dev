@@ -71,6 +71,6 @@ struct task *getCurrentTask() {
 void task_exit() {
     struct task *t = (struct task *)getCurrentTask();
     if ( t != NULL) {
-        t->taskStatus = TASK_STATUS_EXIT;
+        t->taskStatus = TASK_STATUS_PRE_EXIT;
     }
 }

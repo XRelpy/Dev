@@ -73,8 +73,9 @@ int main(int argv, char *argc[]) {
                     currentTask->taskStatus = TASK_STATUS_LOOP;
                 } else if (currentTask->taskStatus == TASK_STATUS_LOOP) {
                     currentTask->loop();    
-                } else if (currentTask->taskStatus == TASK_STATUS_EXIT) {
+                } else if (currentTask->taskStatus == TASK_STATUS_PRE_EXIT) {
                     currentTask->exit();
+                    currentTask->start = TASK_STATUS_EXIT;
                     // TODO release task
                 }
             }

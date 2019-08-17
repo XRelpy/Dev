@@ -7,7 +7,9 @@
 
 #define TASK_STATUS_START 0
 #define TASK_STATUS_LOOP    1
-#define TASK_STATUS_EXIT  2
+#define TASK_STATUS_PRE_EXIT 2
+#define TASK_STATUS_EXIT  3
+
 
 struct task
 {
