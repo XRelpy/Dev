@@ -9,11 +9,6 @@ struct task_list *runningTask;
 U32 taskCnt = 1;
 
 void register_task(struct task *t) {
-    /*/ debug
-    t->start();
-    t->loop();
-    t->exit();
-    //*/
     struct task_list *temp;
 
     if (index == NULL) {
@@ -34,15 +29,6 @@ void register_task(struct task *t) {
     t->taskStatus = TASK_STATUS_START;
     temp->t = t;
     taskCnt++;
-
-    int cnt = 0;
-    temp = index;
-    while(temp != NULL){
-        cnt++;
-        temp = (struct task_list *)temp->next;
-    }
-
-    //printf("Total task:%d\n", cnt); 
 }
 
 void schdule_task() {

@@ -21,11 +21,6 @@ void taskALoop() {
     for (i = 0; i < 256; i++) {
         task_write(taskMem, i, 'A' + i);
     }
-    /*
-    U32 taskMem = task_malloc(512);
-    for (int i = 0; i < 512; i++) {
-        task_write(taskMem, i, 'A');
-    }*/
     printf("A: taskLoop\n");
 }
 

@@ -19,7 +19,6 @@ void timer(int sig)
 {
     if(SIGALRM == sig)
     {
-        //printf("timer\n");
         schdule_task();
         currentTask = getCurrentTask();
         schduleFlag = false;
@@ -50,7 +49,6 @@ int main(int argv, char *argc[]) {
     mem_init();
     taskInit();
     printf("system running.\n");
-    //dumpsys();
     // System Start.
     signal(SIGALRM, timer);
     if (SYS_TIMER == SYS_TIMER_2) {
