@@ -18,24 +18,25 @@ U64 vm_malloc(U32 size) {
     U32 page_count = size / MEM_OFFSET + 1;
     //printf("size:%d\n", page_count);
     bool find_mem = false;
-        for (int i = 0; i < pg_szie; i = i + pt_size)  {
-            struct virtual_mem_index *p = (struct virtual_mem_index *)(mem_sys + i);
-            if (p->USED == 0) {
-                if (!find_mem) {
-                    ptr = mem_index + (p->DIR) * MEM_MID_DIR_VALUE * MEM_OFFSET + p->MID_DIR * MEM_OFFSET;
-                    find_mem = true;
-                    //printf("index0:%lld\n", ptr);
-                    //printf("index:%lld\n", (mem_index + (p->DIR) * (p->MID_DIR) * MEM_OFFSET));
-                    //printf("alloc:%d %d\n", p->DIR, p->MID_DIR);
-                }
-                p->USED = 1;
-                struct task *t = currentTask;
-                p->ID = (t == NULL) ? 1 : t->taskId;
-                page_count--;
-            } 
-            if (page_count == 0) {
-                break;
+    U32 i;
+    for (i = 0; i < pg_szie; i = i + pt_size)  {
+        struct virtual_mem_index *p = (struct virtual_mem_index *)(mem_sys + i);
+        if (p->USED == 0) {
+            if (!find_mem) {
+                ptr = mem_index + (p->DIR) * MEM_MID_DIR_VALUE * MEM_OFFSET + p->MID_DIR * MEM_OFFSET;
+                find_mem = true;
+                //printf("index0:%lld\n", ptr);
+                //printf("index:%lld\n", (mem_index + (p->DIR) * (p->MID_DIR) * MEM_OFFSET));
+                //printf("alloc:%d %d\n", p->DIR, p->MID_DIR);
             }
+            p->USED = 1;
+            struct task *t = currentTask;
+            p->ID = (t == NULL) ? 1 : t->taskId;
+            page_count--;
+        } 
+        if (page_count == 0) {
+            break;
+        }
     }
     //printf("vm_malloc: %lld\n", ptr);
     return ptr;
@@ -57,8 +58,8 @@ void mem_init() {
     //printf("virtual_mem_index:%ld\n" ,mem_index);
     mem_sys = mem_index + MEMORY_SYS_BASE;
 
-
-    for (U32 i = 0; i < pg_szie; i = i + pt_size) {
+    U32 i;
+    for (i = 0; i < pg_szie; i = i + pt_size) {
         struct virtual_mem_index *p = (struct virtual_mem_index *)(mem_sys + i);
         p->RES_1 = 0x0;
         p->USED = 0x0;
@@ -80,7 +81,8 @@ U32 taskLineTableWrite(U32 taskId, U32 size) {
     U64 *taskPrt = mem_task + taskId * (TASK_LINE_MEM_NUM) * sizeof(U64);
     U32 ptrSize = sizeof(U64);
     int tPtr = sizeof(struct task_line);
-    for (int i = 0; i < TASK_LINE_MEM_NUM; i++) {
+    U32 i;
+    for (i = 0; i < TASK_LINE_MEM_NUM; i++) {
         if ((*(taskPrt + ptrSize * i)) == 0) {
             (*taskPrt) = vm_malloc(size);
             /*

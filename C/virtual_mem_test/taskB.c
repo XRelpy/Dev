@@ -6,7 +6,8 @@
 
 void taskBStart() {
     U32 taskMem = task_malloc(512);
-    for (int i = 0; i < 512; i++) {
+    U32 i;
+    for (i = 0; i < 512; i++) {
         task_write(taskMem, i, 'B');
     }
     printf("B: taskStart\n");
@@ -14,7 +15,8 @@ void taskBStart() {
 
 void taskBLoop() {
     U32 taskMem = task_malloc(512);
-    for (int i = 0; i < 512; i++) {
+    U32 i;
+    for (i = 0; i < 512; i++) {
         task_write(taskMem, i, 'B' + i);
     }
     printf("B: taskLoop\n");

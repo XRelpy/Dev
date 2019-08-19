@@ -19,7 +19,8 @@ U32 task_malloc(U32 size) {
     //printf("Base ADDR:%ld\n", *taskPrt);
     U32 ptrSize = sizeof(U64);
     //int tPtr = sizeof(struct task_line);
-    for (U32 i = 0; i < TASK_LINE_MEM_NUM; i++) {
+    U32 i;
+    for (i = 0; i < TASK_LINE_MEM_NUM; i++) {
         //*(taskPrt + i) = 'A';
         if ((*(taskPrt + i)) == 0) {
             (*(taskPrt + i)) = vm_malloc(size);
