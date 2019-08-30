@@ -8,6 +8,7 @@
 
 #define TASK_TABLE_USED 1
 #define TASK_TABLE_USED_FULL 2
+
 struct task_line {
     U32 RES:3,OFFSET:26,TYPE:2,USED:1
 };

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include<stdbool.h>
+#include <stdbool.h>
 #include "virtual_mem.h"
 #include "task_line_memory.h"
 #include "task.h"

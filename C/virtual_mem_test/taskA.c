@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include"task.h"
+#include "task.h"
 #include "task_line_memory.h"
-#include"virtual_mem.h"
+#include "virtual_mem.h"
 
 void taskAStart() {
     U32 taskMem = task_malloc(256);

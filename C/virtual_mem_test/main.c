@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include<unistd.h>
+#include <unistd.h>
 #include <signal.h>
 #include <sys/time.h>
-#include<stdbool.h>
+#include <stdbool.h>
 #include <string.h>
 
 #include "virtual_mem.h"
@@ -22,6 +22,7 @@ void timer(int sig)
         schdule_task();
         currentTask = getCurrentTask();
         schduleFlag = false;
+        
         if (SYS_TIMER == SYS_TIMER_1) {
             alarm(1);
         }
