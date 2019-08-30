@@ -1,0 +1,9 @@
+ 一个操作系统的实现 demo
+
+ 01 boot
+   setup 1. build
+        nasm boot.asm -o boot.bin
+    setup 2. make a floppy disk
+        dd if=boot.bin of=a.img bs=512 count=1 conv=notrunc
+   setup 3. Run
+        qemu-system-i386 -fda a.img
