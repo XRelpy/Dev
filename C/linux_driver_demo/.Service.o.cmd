@@ -1,1 +1,0 @@
-cmd_/home/mark/Dev/github/Dev/C/linux_driver_demo/Service.o := ld -m elf_x86_64  -z max-page-size=0x200000    -r -o /home/mark/Dev/github/Dev/C/linux_driver_demo/Service.o /home/mark/Dev/github/Dev/C/linux_driver_demo/service.o /home/mark/Dev/github/Dev/C/linux_driver_demo/buffer.o 
